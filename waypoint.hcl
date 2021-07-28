@@ -2,7 +2,7 @@ project = "hello-world"
 
 app "web" {
     build {
-        use "docker" {}
+        use "pack" {}
 
         registry {
           use "aws-ecr" {
