@@ -2,11 +2,12 @@ project = "hello-world"
 
 app "web" {
     build {
-        use "pack" {}
+        use "docker" {}
 
         registry {
           use "aws-ecr" {
             region = "eu-west-1"
+            repository = "938765688536.dkr.ecr.eu-west-1.amazonaws.com/dev-development-waypoint/hello-world"
             tag = "latest"
           }
         }
