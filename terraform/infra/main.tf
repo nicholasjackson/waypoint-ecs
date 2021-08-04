@@ -44,12 +44,14 @@ data "aws_iam_role" "waypoint" {
 
 module "ecr" {
   source = "cloudposse/ecr/aws"
-  # Cloud Posse recommends pinning every module to a specific version
-  # version     = "x.x.x"
   namespace              = "dev"
   stage                  = "development"
   name                   = "waypoint"
   principals_full_access = [data.aws_iam_role.waypoint.arn]
+}
+
+output "vpc_id" {
+  value = module.vpc.vpc_id
 }
 
 output "ecs_subnet_1" {
