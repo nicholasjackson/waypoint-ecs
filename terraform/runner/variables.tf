@@ -3,9 +3,9 @@ variable "vpc_id" {
   default = "vpc-07fd0deda705a5a82"
 }
 
-variable "subnet_id" {
-  description = "ID for the Subnet to deploy the runner into"
-  default = "subnet-0d62732839b45ae55"
+variable "subnet_ids" {
+  description = "IDs for the Subnet to deploy the runner into"
+  default = ["subnet-0d62732839b45ae55","subnet-0de469b0a33503813","subnet-09dc51bd84015b4ed"]
 }
 
 variable "waypoint_server_addr" {
@@ -15,7 +15,7 @@ variable "waypoint_server_addr" {
 
 variable "waypoint_server_token" {
   description = "Token to be used for accessing the Waypoint server"
-  default = "bM152PWkXxfoy4vA51JFhR7LobrtRJp9RSso5fDx9uwJmXWxEv9YnbUTX9E51EhTWt2MGQyfEooa1gxcQeJR7VM9qtWgaz7JdFhoN"
+  default = "xxxxxx"
 }
 
 variable "ssh_public_key" {

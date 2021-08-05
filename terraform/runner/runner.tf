@@ -142,20 +142,18 @@ resource "aws_security_group" "runner_sg" {
   }
 }
 
-resource "aws_instance" "runner" {
-  ami           = data.aws_ami.amazon-linux-2.id
+resource "aws_launch_configuration" "waypoint" {
+  name_prefix   = "waypoint-runner"
+  image_id      = data.aws_ami.amazon-linux-2.id
   instance_type = "t3.micro"
+  
   associate_public_ip_address = true
 
-  vpc_security_group_ids = [aws_security_group.runner_sg.id]
-  subnet_id = var.subnet_id
-  iam_instance_profile = aws_iam_instance_profile.runner_profile.name
-
   key_name = aws_key_pair.deployer.key_name
+  
+  security_groups = [aws_security_group.runner_sg.id]
 
-  tags = {
-    Name = "Waypoint Runner"
-  }
+  iam_instance_profile = aws_iam_instance_profile.runner_profile.name
 
   user_data_base64 = base64encode(
     templatefile(
@@ -166,10 +164,28 @@ resource "aws_instance" "runner" {
       }
     )
   )
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  
 }
 
-output "runner_public_ip" {
-  value = aws_instance.runner.public_ip
+resource "aws_autoscaling_group" "bar" {
+  desired_capacity   = 1
+  max_size           = 1
+  min_size           = 1
+
+  launch_configuration = aws_launch_configuration.waypoint.name
+
+  vpc_zone_identifier = var.subnet_ids
+
+  tag {
+    key = "Name"
+    value = "Waypoint Runner"
+    propagate_at_launch = true
+  }
 }
 
 output "runner_user" {
