@@ -11,7 +11,7 @@ install_waypoint:
 	-ecs-execution-role-name=waypoint-server-execution-role \
 	-ecs-region=eu-west-1 \
 	-ecs-server-image=hashicorp/waypoint:latest \
-	-ecs-subnets="$(terraform output --raw ecs_subnet_1),$(terraform output --raw ecs_subnet_2)" 
+	-ecs-subnets="$(shell terraform output --raw ecs_subnet_1),$(shell terraform output --raw ecs_subnet_2)" 
 
 uninstall_waypoint:
 	waypoint server uninstall \
