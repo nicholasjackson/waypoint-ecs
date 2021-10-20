@@ -2,7 +2,10 @@ project = "hello-world"
 
 app "web" {
   build {
-    use "docker" {}
+    use "pack" {
+      builder            = "heroku/buildpacks:20"
+      disable_entrypoint = false
+    }
 
     registry {
       use "aws-ecr" {
