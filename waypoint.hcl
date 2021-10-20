@@ -1,11 +1,20 @@
 project = "hello-world"
 
+runner {
+  enabled = true
+
+  data_source "git" {
+    url = "https://github.com/nicholasjackson/waypoint-ecs"
+  }
+
+  poll {
+    enabled = true
+  }
+}
+
 app "web" {
   build {
-    use "pack" {
-      builder            = "heroku/buildpacks:20"
-      disable_entrypoint = false
-    }
+    use "docker" {}
 
     registry {
       use "aws-ecr" {
