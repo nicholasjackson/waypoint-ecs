@@ -26,7 +26,7 @@ module "vpc" {
 
   azs             = [data.aws_availability_zones.available.names[0], data.aws_availability_zones.available.names[1], data.aws_availability_zones.available.names[2]]
   private_subnets = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
-  public_subnets  = ["10.1.11.0/24", "10.1.12.0/24","10.1.13.0/24"]
+  public_subnets  = ["10.1.11.0/24", "10.1.12.0/24", "10.1.13.0/24"]
 
   enable_nat_gateway = false
 
@@ -38,16 +38,41 @@ module "vpc" {
   }
 }
 
-data "aws_iam_role" "waypoint" {
-  name = "waypoint-server-execution-role"
-}
+//data "aws_iam_role" "waypoint" {
+//  name = "waypoint-server-execution-role"
+//}
 
 module "ecr" {
-  source = "cloudposse/ecr/aws"
+  source                 = "cloudposse/ecr/aws"
   namespace              = "dev"
   stage                  = "development"
   name                   = "waypoint"
-  principals_full_access = [data.aws_iam_role.waypoint.arn]
+  principals_full_access = [aws_iam_role.waypoint_server_execution_role.arn]
+}
+
+resource "aws_iam_role" "waypoint_server_execution_role" {
+  name = "waypoint-server-execution-role"
+
+  assume_role_policy = <<EOF
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "",
+			"Effect": "Allow",
+			"Principal": {
+				"Service": "ecs-tasks.amazonaws.com"
+			},
+			"Action": "sts:AssumeRole"
+		}
+	]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "waypoint_server" {
+  role       = aws_iam_role.waypoint_server_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 output "vpc_id" {
@@ -67,5 +92,5 @@ output "ecs_subnet_3" {
 }
 
 output "ecr_repository" {
-  value = module.ecr.repository_url 
+  value = module.ecr.repository_url
 }
