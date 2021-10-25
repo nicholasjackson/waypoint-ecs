@@ -20,6 +20,8 @@ app "web" {
       use "aws-ecr" {
         region     = "eu-west-1"
         tag        = "latest"
+        repository = "hashicorp-dev-waypoint"
+
       }
     }
   }
