@@ -19,13 +19,14 @@ app "web" {
     registry {
       use "aws-ecr" {
         repository = "hashicorp-dev-hello-world"
-        tag        = "latest"
+        region     = "eu-west-1"
       }
     }
   }
 
   deploy {
     use "aws-ecs" {
+      region = "eu-west-1"
       memory = 512
     }
   }
