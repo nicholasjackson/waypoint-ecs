@@ -1,4 +1,4 @@
-waypoint_version = 0.6.0
+waypoint_version = 0.6.1
 
 install_waypoint:
 	waypoint server install -accept-tos \

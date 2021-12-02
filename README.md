@@ -1,1 +1,1 @@
-# ECS Waypoint Example - WIP
+# ECS Waypoint Example
