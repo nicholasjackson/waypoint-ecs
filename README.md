@@ -199,3 +199,110 @@ ecs_subnet_2 = "subnet-047aa9f56d505fc5e"
 ecs_subnet_3 = "subnet-021649c487f7b2091"
 vpc_id = "vpc-0b925e97abfcece7a"
 ```
+
+## Cleanup resources
+
+```shell
+➜ waypoint destroy --project hello-world --remote --auto-approve
+
+» Operation is queued. Waiting for runner assignment...
+  If you interrupt this command, the job will still run in the background.
+
+» Cloning data from Git
+  URL: https://github.com/nicholasjackson/waypoint-ecs
+  Ref: HEAD
+
+» Destroying releases for application 'web'...
+
+» Destroying deployments for application 'web'...
+✓ Finished destroying ECS deployment
+✓ Deleted service web-01FNY088Y0FRA3B3SEN7V3Y6MB
+✓ Deregistered this deployment's target group from ALB listener
+✓ Deleting target group web-01FNY088Y0FRA3B3SEN7V3Y6MB
+✓ Finished destroying ECS deployment
+✓ Deleted service web-01FNXZJGT5GCYA2Q59773MBCNZ
+✓ Deleted ALB Listener
+✓ Deleting target group web-01FNXZJGT5GCYA2Q59773MBCNZ
+Destroy successful!
+```
+
+```shell
+➜ make uninstall_waypoint
+waypoint server uninstall \
+-ecs-region=eu-west-1 \
+-auto-approve \
+-platform=ecs
+Uninstalling Waypoint server on platform "ecs" with context "install-1638459211"
+✓ Snapshot "waypoint-server-snapshot-1638463915" generated
+
+✓ Runner resources deleted
+⠸ Server resources deleted
+
+Waypoint server successfully uninstalled for ecs platform
+```
+
+```shell
+terraform destroy
+```
+
+```shell
+Plan: 0 to add, 0 to change, 21 to destroy.
+
+Changes to Outputs:
+  - ecr_repository = "938765688536.dkr.ecr.eu-west-1.amazonaws.com/hashicorp-dev-hello-world" -> null
+  - ecs_subnet_1   = "subnet-077d094531e3d76d1" -> null
+  - ecs_subnet_2   = "subnet-047aa9f56d505fc5e" -> null
+  - ecs_subnet_3   = "subnet-021649c487f7b2091" -> null
+  - vpc_id         = "vpc-0b925e97abfcece7a" -> null
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+module.vpc.aws_route_table_association.public[0]: Destroying... [id=rtbassoc-02b99a0195e2bc79f]
+module.vpc.aws_route_table_association.private[0]: Destroying... [id=rtbassoc-025750655cb3cfd62]
+module.ecr.aws_ecr_lifecycle_policy.name["hashicorp-dev-hello-world"]: Destroying... [id=hashicorp-dev-hello-world]
+module.vpc.aws_route.public_internet_gateway[0]: Destroying... [id=r-rtb-07c08dba811ff88a51080289494]
+module.vpc.aws_route_table_association.public[2]: Destroying... [id=rtbassoc-06bde146484c2cf17]
+module.vpc.aws_route_table_association.private[2]: Destroying... [id=rtbassoc-0f583e2374ca3040d]
+module.vpc.aws_route_table_association.public[1]: Destroying... [id=rtbassoc-04ad1ddc4315617ba]
+module.vpc.aws_route_table_association.private[1]: Destroying... [id=rtbassoc-0bd4c67aedd4417c1]
+module.ecr.aws_ecr_lifecycle_policy.name["hashicorp-dev-hello-world"]: Destruction complete after 0s
+module.vpc.aws_route_table_association.private[1]: Destruction complete after 0s
+module.ecr.aws_ecr_repository.name["hashicorp-dev-hello-world"]: Destroying... [id=hashicorp-dev-hello-world]
+module.vpc.aws_route_table_association.public[0]: Destruction complete after 0s
+module.vpc.aws_route_table_association.private[2]: Destruction complete after 0s
+module.vpc.aws_route.public_internet_gateway[0]: Destruction complete after 0s
+module.vpc.aws_internet_gateway.this[0]: Destroying... [id=igw-0da1cb6e94d6c2551]
+module.vpc.aws_route_table_association.public[1]: Destruction complete after 0s
+module.vpc.aws_route_table_association.public[2]: Destruction complete after 0s
+module.vpc.aws_subnet.public[0]: Destroying... [id=subnet-077d094531e3d76d1]
+module.vpc.aws_subnet.public[2]: Destroying... [id=subnet-021649c487f7b2091]
+module.vpc.aws_subnet.public[1]: Destroying... [id=subnet-047aa9f56d505fc5e]
+module.vpc.aws_route_table.public[0]: Destroying... [id=rtb-07c08dba811ff88a5]
+module.vpc.aws_route_table_association.private[0]: Destruction complete after 0s
+module.vpc.aws_route_table.private[2]: Destroying... [id=rtb-039933c7c15ba2a50]
+module.vpc.aws_subnet.private[0]: Destroying... [id=subnet-04974abbfab354a3d]
+module.vpc.aws_subnet.private[1]: Destroying... [id=subnet-01a9ea058c4157e39]
+module.vpc.aws_route_table.private[1]: Destroying... [id=rtb-0378a57902af4f7d6]
+module.ecr.aws_ecr_repository.name["hashicorp-dev-hello-world"]: Destruction complete after 0s
+module.vpc.aws_subnet.private[2]: Destroying... [id=subnet-089baf34b744f7776]
+module.vpc.aws_subnet.public[1]: Destruction complete after 1s
+module.vpc.aws_route_table.private[0]: Destroying... [id=rtb-06a67778afb0de355]
+module.vpc.aws_route_table.public[0]: Destruction complete after 1s
+module.vpc.aws_internet_gateway.this[0]: Destruction complete after 1s
+module.vpc.aws_subnet.public[2]: Destruction complete after 1s
+module.vpc.aws_route_table.private[1]: Destruction complete after 1s
+module.vpc.aws_subnet.public[0]: Destruction complete after 1s
+module.vpc.aws_subnet.private[2]: Destruction complete after 1s
+module.vpc.aws_subnet.private[1]: Destruction complete after 1s
+module.vpc.aws_subnet.private[0]: Destruction complete after 1s
+module.vpc.aws_route_table.private[2]: Destruction complete after 1s
+module.vpc.aws_route_table.private[0]: Destruction complete after 0s
+module.vpc.aws_vpc.this[0]: Destroying... [id=vpc-0b925e97abfcece7a]
+module.vpc.aws_vpc.this[0]: Destruction complete after 1s
+
+Destroy complete! Resources: 21 destroyed.
+```
