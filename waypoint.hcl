@@ -18,8 +18,7 @@ app "web" {
 
     registry {
       use "aws-ecr" {
-        region     = "eu-west-1"
-        repository = "938765688536.dkr.ecr.eu-west-1.amazonaws.com/dev-development-waypoint"
+        repository = "hashicorp-dev-hello-world"
         tag        = "latest"
       }
     }
@@ -27,7 +26,6 @@ app "web" {
 
   deploy {
     use "aws-ecs" {
-      region = "eu-west-1"
       memory = 512
     }
   }

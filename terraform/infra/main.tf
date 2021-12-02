@@ -35,45 +35,65 @@ module "vpc" {
 
   tags = {
     Environment = "Development"
+    Owner       = "Nic Jackson"
+    Project     = "Waypoint ECS Test"
   }
 }
 
 //data "aws_iam_role" "waypoint" {
 //  name = "waypoint-server-execution-role"
 //}
-
+//
 module "ecr" {
   source                 = "cloudposse/ecr/aws"
   namespace              = "dev"
   stage                  = "development"
   name                   = "waypoint"
-  principals_full_access = [aws_iam_role.waypoint_server_execution_role.arn]
+  principals_full_access = ["arn:aws:iam::938765688536:role/waypoint-runner", "arn:aws:iam::938765688536:role/waypoint-server-execution-role"]
+
+  tags = {
+    Environment = "Development"
+    Owner       = "Nic Jackson"
+    Project     = "Waypoint ECS Test"
+  }
 }
 
-resource "aws_iam_role" "waypoint_server_execution_role" {
-  name = "waypoint-server-execution-role"
-
-  assume_role_policy = <<EOF
-{
-	"Version": "2012-10-17",
-	"Statement": [
-		{
-			"Sid": "",
-			"Effect": "Allow",
-			"Principal": {
-				"Service": "ecs-tasks.amazonaws.com"
-			},
-			"Action": "sts:AssumeRole"
-		}
-	]
-}
-EOF
-}
-
-resource "aws_iam_role_policy_attachment" "waypoint_server" {
-  role       = aws_iam_role.waypoint_server_execution_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
+//resource "aws_iam_role" "waypoint_server_execution_role" {
+//  name = "waypoint-server-execution-role"
+//
+//  assume_role_policy = <<EOF
+//{
+//	"Version": "2012-10-17",
+//	"Statement": [
+//		{
+//			"Sid": "",
+//			"Effect": "Allow",
+//			"Principal": {
+//				"Service": "ecs-tasks.amazonaws.com"
+//			},
+//			"Action": "sts:AssumeRole"
+//		}
+//	]
+//}
+//EOF
+//
+//  tags = {
+//    Environment = "Development"
+//    Owner       = "Nic Jackson"
+//    Project     = "Waypoint ECS Test"
+//  }
+//}
+//
+//resource "aws_iam_role_policy_attachment" "waypoint_server" {
+//  role       = aws_iam_role.waypoint_server_execution_role.name
+//  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+//  
+//  tags = {
+//    Environment = "Development"
+//    Owner = "Nic Jackson"
+//    Project = "Waypoint ECS Test"
+//  }
+//}
 
 output "vpc_id" {
   value = module.vpc.vpc_id
