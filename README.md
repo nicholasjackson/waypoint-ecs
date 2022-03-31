@@ -27,18 +27,18 @@ can be used:
 ```shell
 waypoint server install -accept-tos \
 -platform=ecs \
--ecs-server-image=hashicorp/waypoint:0.6.1 \
--ecs-odr-image=hashicorp/waypoint-odr:0.6.1 \
+-ecs-server-image=hashicorp/waypoint:0.7.2 \
+-ecs-odr-image=hashicorp/waypoint-odr:0.7.2 \
 -ecs-cluster=waypoint-server \
 -ecs-cpu=512 \
 -ecs-mem=1024 \
 -ecs-execution-role-name=waypoint-server-execution-role \
 -ecs-region=eu-west-1 \
--ecs-subnets="subnet-077d094531e3d76d1,subnet-047aa9f56d505fc5e"
+-ecs-subnets="<subnet id 1>,<subnet id 2>,<subnet id 3>"
 ```
 
 It will take about 5 minutes for the server to be deployed and for the ALB to be created, once the server is running,
-you will see a messge like the following: 
+you will see a message like the following: 
 
 ```shell
 ✓ Networking setup
@@ -203,8 +203,10 @@ vpc_id = "vpc-0b925e97abfcece7a"
 ## Cleanup resources
 
 ```shell
-➜ waypoint destroy --project hello-world --remote --auto-approve
+waypoint destroy --project hello-world --local=false --auto-approve
+```
 
+```shell
 » Operation is queued. Waiting for runner assignment...
   If you interrupt this command, the job will still run in the background.
 
@@ -227,7 +229,6 @@ Destroy successful!
 ```
 
 ```shell
-➜ make uninstall_waypoint
 waypoint server uninstall \
 -ecs-region=eu-west-1 \
 -auto-approve \
